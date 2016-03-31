@@ -13,18 +13,17 @@ def kpi(tp,fp,fn,tn,correct):
     accuracy=float(correct*100)/(tp+tn+fp+fn)
     return (precision,recall,f1,accuracy)
         
-f=open('dictionary.txt','r')
-vocabulary=simplejson.load(f)
-f.close()
+vocabulary=np.load('dictionary.npy')
+vocabulary=vocabulary.tolist()
 
 pHam,pSpam=NB_YPrior()
    
 theta=np.load('thetaArray.npy')
-thetaSpam=np.log(theta[0])
-thetaHam=np.log(theta[1])
+thetaSpam=(theta[0])
+thetaHam=(theta[1])
 
-One_thetaSpam=np.log(1-theta[0])
-One_thetaHam=np.log(1-theta[1])
+One_thetaSpam=(1-theta[0])
+One_thetaHam=(1-theta[1])
 
     
 def createFeatureVector(words):
@@ -53,8 +52,8 @@ def classify(data):
         for word in words[1:]:
             sentence+=word+" "
         
-        resSpam=np.dot(featureVector,thetaSpam)+ np.dot(1-featureVector,One_thetaSpam) + np.log(pSpam)   
-        resHam=np.dot(featureVector,thetaHam) + np.dot(1-featureVector,One_thetaHam) + np.log(pHam)
+        resSpam=np.dot(featureVector,np.log(thetaSpam))+ np.dot(1-featureVector,np.log(One_thetaSpam)) + np.log(pSpam)   
+        resHam=np.dot(featureVector,np.log(thetaHam)) + np.dot(1-featureVector,np.log(One_thetaHam)) + np.log(pHam)
         
         #resSpam,resHam=logProd(sentence)
         res=''

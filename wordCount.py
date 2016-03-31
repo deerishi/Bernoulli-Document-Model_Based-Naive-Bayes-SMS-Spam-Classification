@@ -6,7 +6,7 @@ import simplejson
 
 spamDict={'SPAMCOUNT':0}
 hamDict={'HAMCOUNT':0}
-dictionary=[]
+
 
 
 def saveFile(data,name):
@@ -15,6 +15,7 @@ def saveFile(data,name):
 
 def wcount(filename):
     f=open(filename,'r')
+    dictionary=[]
     for line in f:
         words=nltk.word_tokenize(line)
         #words.remove('\n')
@@ -38,10 +39,11 @@ def wcount(filename):
                 else:
                     spamDict[word]=1
 
-    #saveFile(spamDict,'TrainSpamDict')  
-    #saveFile(hamDict,'TrainHamDict')  
-    f=open('dictionary.txt','w')
-    simplejson.dump(dictionary,f)
+    saveFile(spamDict,'TrainSpamDict')  
+    saveFile(hamDict,'TrainHamDict')  
+    f='dictionary'
+    dictionary=np.asarray(dictionary)
+    np.save(f,dictionary)
     
     
 if __name__=='__main__':
